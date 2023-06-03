@@ -1,0 +1,29 @@
+# Sine Sweep Tom
+
+fs = 44100
+f1 = 100
+f2 = 16000
+T = 30
+t = np.linspace(0, T, int(fs * T) )
+R = np.log(f2 / f1)
+
+# ESS generation
+sinesweep = np.sin((2 * np.pi * f1 * T / R) * (np.exp(t * R / T) - 1))
+
+# Inverse filter
+k = np.exp((t * R) / T)
+f = sinesweep[::-1] / k
+
+impulse = fftconvolve(f, data, mode = ""same"")
+impulse = impulse / np.max(np.abs(impulse))"
+
+
+# Sine Sweep cuatri pasado
+
+def sweep(t, f1, f2, sample_rate):
+time = np.linspace(0, t, sample_rate*t)
+k = (t*2*np.pi*f1)/(np.log(f2/f1))
+l = t/np.log(f2/f1)
+sweep_signal = np.sin(k*(np.exp(time/l))-1)
+
+return (time, sweep_signal)
